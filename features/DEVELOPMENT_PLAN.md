@@ -147,15 +147,15 @@ Achievement Jar/
 #### Achievement Recording
 #### 成就记录
 
-- [ ] Design and implement text entry UI
-- [ ] Add character limit functionality (150-200 characters)
-- [ ] Implement basic categorization
+- [x] Design and implement text entry UI
+- [x] Add character limit functionality (150-200 characters)
+- [x] Implement basic categorization
 - [ ] Create date selection/override
 - [ ] Design and implement simple "add to jar" animation
 
-- [ ] 设计和实现文本输入UI
-- [ ] 添加字符限制功能（150-200字符）
-- [ ] 实现基本分类
+- [x] 设计和实现文本输入UI
+- [x] 添加字符限制功能（150-200字符）
+- [x] 实现基本分类
 - [ ] 创建日期选择/覆盖
 - [ ] 设计和实现简单的"添加到罐子"动画
 

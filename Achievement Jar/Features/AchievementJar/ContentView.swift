@@ -11,15 +11,73 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var achievements: [Achievement]
+    @State private var showingAddSheet = false
 
     var body: some View {
         NavigationSplitView {
             List {
                 ForEach(achievements) { achievement in
                     NavigationLink {
-                        Text("Achievement at \(achievement.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        VStack(alignment: .leading, spacing: 15) {
+                            Text(achievement.text)
+                                .padding()
+                                .background(Color.gray.opacity(0.1))
+                                .cornerRadius(8)
+                            
+                            HStack {
+                                Text("Date: ")
+                                    .fontWeight(.bold)
+                                Text("\(achievement.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                            }
+                            
+                            if let category = achievement.category {
+                                HStack {
+                                    Text("Category: ")
+                                        .fontWeight(.bold)
+                                    Text(category)
+                                }
+                            }
+                            
+                            if let mood = achievement.mood {
+                                HStack {
+                                    Text("Mood: ")
+                                        .fontWeight(.bold)
+                                    Text(mood)
+                                }
+                            }
+                            
+                            Spacer()
+                        }
+                        .padding()
+                        .navigationTitle("Achievement Details")
                     } label: {
-                        Text(achievement.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        VStack(alignment: .leading) {
+                            Text(achievement.text)
+                                .lineLimit(1)
+                                .fontWeight(.medium)
+                            
+                            HStack {
+                                Text("\(achievement.timestamp, format: .dateTime.day().month())")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                
+                                if let category = achievement.category {
+                                    Text("•")
+                                        .foregroundColor(.secondary)
+                                    Text(category)
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                }
+                                
+                                if let mood = achievement.mood {
+                                    Text("•")
+                                        .foregroundColor(.secondary)
+                                    Text(mood)
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                }
+                            }
+                        }
                     }
                 }
                 .onDelete(perform: deleteAchievements)
@@ -29,20 +87,18 @@ struct ContentView: View {
                     EditButton()
                 }
                 ToolbarItem {
-                    Button(action: addAchievement) {
+                    Button {
+                        showingAddSheet = true
+                    } label: {
                         Label("Add Achievement", systemImage: "plus")
                     }
                 }
             }
+            .sheet(isPresented: $showingAddSheet) {
+                AchievementEntryView()
+            }
         } detail: {
             Text("Select an achievement")
-        }
-    }
-
-    private func addAchievement() {
-        withAnimation {
-            let newAchievement = Achievement(text: "New Achievement", timestamp: Date())
-            modelContext.insert(newAchievement)
         }
     }
 
