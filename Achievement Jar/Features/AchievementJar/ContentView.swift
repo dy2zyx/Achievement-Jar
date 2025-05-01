@@ -19,7 +19,7 @@ struct ContentView: View {
                 ForEach(achievements) { achievement in
                     NavigationLink {
                         VStack(alignment: .leading, spacing: 15) {
-                            Text(achievement.text)
+                            Text(achievement.content)
                                 .padding()
                                 .background(Color.gray.opacity(0.1))
                                 .cornerRadius(8)
@@ -27,22 +27,20 @@ struct ContentView: View {
                             HStack {
                                 Text("Date: ")
                                     .fontWeight(.bold)
-                                Text("\(achievement.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                                Text(achievement.date.formatted(date: .numeric, time: .standard))
                             }
                             
-                            if let category = achievement.category {
-                                HStack {
-                                    Text("Category: ")
-                                        .fontWeight(.bold)
-                                    Text(category)
-                                }
+                            HStack {
+                                Text("Category: ")
+                                    .fontWeight(.bold)
+                                Text(achievement.category)
                             }
                             
-                            if let mood = achievement.mood {
+                            if !achievement.moods.isEmpty {
                                 HStack {
-                                    Text("Mood: ")
+                                    Text("Moods: ")
                                         .fontWeight(.bold)
-                                    Text(mood)
+                                    Text(achievement.moods.joined(separator: ", "))
                                 }
                             }
                             
@@ -52,27 +50,25 @@ struct ContentView: View {
                         .navigationTitle("Achievement Details")
                     } label: {
                         VStack(alignment: .leading) {
-                            Text(achievement.text)
+                            Text(achievement.content)
                                 .lineLimit(1)
                                 .fontWeight(.medium)
                             
                             HStack {
-                                Text("\(achievement.timestamp, format: .dateTime.day().month())")
+                                Text(achievement.date.formatted(.dateTime.day().month()))
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                                 
-                                if let category = achievement.category {
-                                    Text("•")
-                                        .foregroundColor(.secondary)
-                                    Text(category)
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                }
+                                Text("•")
+                                    .foregroundColor(.secondary)
+                                Text(achievement.category)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
                                 
-                                if let mood = achievement.mood {
+                                if !achievement.moods.isEmpty {
                                     Text("•")
                                         .foregroundColor(.secondary)
-                                    Text(mood)
+                                    Text(achievement.moods.first ?? "")
                                         .font(.caption)
                                         .foregroundColor(.secondary)
                                 }

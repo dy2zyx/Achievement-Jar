@@ -12,19 +12,18 @@ This feature allows users to create short "achievement notes" to document positi
 - [x] Implement text entry field with character limit (150-200 chars)
 - [x] Design category selection component
 - [x] Create mood/emotion tag selector
+- [x] Implement date selection/override functionality
+- [x] Create "add to jar" animation
 - [x] 设计功能架构和用户流程
 - [x] 创建成就输入屏幕的基本UI (AchievementEntryView.swift)
 - [x] 实现带字符限制的文本输入字段（150-200字符）
 - [x] 设计类别选择组件
 - [x] 创建心情/情绪标签选择器
+- [x] 实现日期选择/覆盖功能
+- [x] 创建"添加到罐子"动画
 
 ## In Progress Tasks
 ## 进行中任务
-
-- [ ] Implement date selection/override functionality
-- [ ] Create "add to jar" animation
-- [ ] 实现日期选择/覆盖功能
-- [ ] 创建"添加到罐子"动画
 
 ## Future Tasks
 ## 未来任务

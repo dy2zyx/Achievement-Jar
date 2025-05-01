@@ -3,11 +3,14 @@ import SwiftData
 
 struct AchievementEntryView: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.dismiss) var dismiss // To close the view after saving
-
-    @State private var achievementText: String = ""
-    @State private var selectedCategory: String? = nil
-    @State private var selectedMood: String? = nil
+    @Environment(\.dismiss) private var dismiss
+    
+    @State private var content: String = ""
+    @State private var selectedCategory: String = "Personal"
+    @State private var selectedMoods: Set<String> = []
+    @State private var selectedDate: Date = Date()
+    @State private var isCustomDate: Bool = false
+    @State private var showingAnimation: Bool = false
     
     // Character limit constants
     private let characterLimit = 200
@@ -15,7 +18,7 @@ struct AchievementEntryView: View {
     
     // Computed property for current character count
     private var characterCount: Int {
-        achievementText.count
+        content.count
     }
     
     // Computed property for character count color
@@ -28,108 +31,149 @@ struct AchievementEntryView: View {
             return .gray // Normal
         }
     }
-
+    
+    // Date formatter for display
+    private var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter
+    }
+    
     var body: some View {
-        NavigationView { // Or embed in existing navigation
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    // Achievement text entry section
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text("Record your achievement:")
-                            // .font(Font.appPrimary(size: 18, weight: .medium)) // Temporarily removed
-                            .padding(.bottom, 2)
+        ZStack {
+            NavigationView {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        // Achievement text entry section
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("Record your achievement:")
+                                .font(.headline)
+                                .padding(.bottom, 2)
 
-                        // Character count display
-                        Text("\(characterCount)/\(characterLimit)")
-                            .foregroundColor(countColor)
-                            .font(.caption)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                            .padding(.bottom, 2)
+                            // Character count display
+                            Text("\(characterCount)/\(characterLimit)")
+                                .foregroundColor(countColor)
+                                .font(.caption)
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                                .padding(.bottom, 2)
+                                .accessibilityIdentifier("characterCountText")
 
-                        TextEditor(text: $achievementText)
-                            .frame(height: 150) // Reduced height to fit other components
-                            .border(Color.gray.opacity(0.5), width: 1)
-                            .cornerRadius(5)
-                            // .font(Font.appPrimary(size: 16)) // Temporarily removed
-                            .onChange(of: achievementText) { oldValue, newValue in
-                                // Enforce character limit
-                                if newValue.count > characterLimit {
-                                    achievementText = String(newValue.prefix(characterLimit))
+                            TextEditor(text: $content)
+                                .frame(height: 150)
+                                .border(Color.gray.opacity(0.5), width: 1)
+                                .cornerRadius(5)
+                                .accessibilityIdentifier("achievementContentTextEditor")
+                                .onChange(of: content) { oldValue, newValue in
+                                    // Enforce character limit
+                                    if newValue.count > characterLimit {
+                                        content = String(newValue.prefix(characterLimit))
+                                    }
                                 }
+                        }
+                        
+                        Divider()
+                            .padding(.vertical, 5)
+                        
+                        // Date selection section
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("Date")
+                                .font(.headline)
+                                .padding(.bottom, 4)
+                            
+                            // Toggle between "Today" and custom date
+                            Toggle("Use custom date", isOn: $isCustomDate)
+                                .padding(.bottom, isCustomDate ? 10 : 0)
+                            
+                            if isCustomDate {
+                                DatePicker(
+                                    "Achievement date",
+                                    selection: $selectedDate,
+                                    displayedComponents: [.date]
+                                )
+                                .datePickerStyle(.compact)
+                                .padding(.horizontal)
+                            } else {
+                                Text("Today: \(Date(), formatter: dateFormatter)")
+                                    .foregroundColor(.secondary)
+                                    .padding(.horizontal)
                             }
-                    }
-                    
-                    Divider()
-                        .padding(.vertical, 5)
-                    
-                    // Category selector
-                    CategorySelector(selectedCategory: $selectedCategory)
-                    
-                    Divider()
-                        .padding(.vertical, 5)
-                    
-                    // Mood selector
-                    MoodSelector(selectedMood: $selectedMood)
-                    
-                    Spacer(minLength: 30) // Push button to bottom with minimum space
+                        }
+                        
+                        Divider()
+                            .padding(.vertical, 5)
+                            
+                        // Category selector
+                        CategorySelector(selectedCategory: $selectedCategory)
+                            
+                        Divider()
+                            .padding(.vertical, 5)
+                            
+                        // Mood selector
+                        MoodSelector(selectedMoods: $selectedMoods)
+                        
+                        Spacer(minLength: 30) // Push button to bottom with minimum space
 
+                    }
+                    .padding()
+                }
+                .safeAreaInset(edge: .bottom) {
+                    // Add to Jar Button placed outside ScrollView
                     Button("Add to Jar") {
-                        saveAchievement()
+                        triggerSaveAnimation()
                     }
                     .buttonStyle(.borderedProminent)
                     .frame(maxWidth: .infinity)
-                    .padding(.vertical)
-                    .disabled(achievementText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .padding()
+                    .background(.bar) // Use background material for floating effect
+                    .disabled(content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .opacity(showingAnimation ? 0 : 1) // Hide button during animation
+                    .accessibilityIdentifier("addToJarButton")
                 }
-                .padding()
-            }
-            .navigationTitle("New Achievement")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
+                .navigationTitle("New Achievement")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            dismiss()
+                        }
                     }
                 }
+                .disabled(showingAnimation) // Disable UI during animation
+            }
+            
+            // Overlay the animation when active
+            JarAdditionAnimation(isAnimating: $showingAnimation) {
+                // Animation completed callback
+                saveAchievementAndDismiss() // Save and dismiss after animation
             }
         }
     }
-
-    private func saveAchievement() {
-        guard !achievementText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            // Maybe show an alert to the user?
+    
+    private func triggerSaveAnimation() {
+        guard !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             print("Achievement text cannot be empty.")
             return
         }
+        showingAnimation = true
+    }
 
-        let newAchievement = Achievement(
-            text: achievementText, 
-            timestamp: Date(),
+    private func saveAchievementAndDismiss() {
+        let achievement = Achievement(
+            content: content.trimmingCharacters(in: .whitespacesAndNewlines),
             category: selectedCategory,
-            mood: selectedMood,
-            isRetrieved: false
+            moods: selectedMoods,
+            date: isCustomDate ? selectedDate : Date()
         )
         
-        modelContext.insert(newAchievement)
-
-        // Optionally: Trigger animation if needed later
-
-        dismiss() // Close the view
+        modelContext.insert(achievement)
+        
+        // Dismiss is now called after animation completes via the callback
+        dismiss()
     }
 }
 
 #Preview {
-    // Need a temporary model container for the preview
-    do {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let container = try ModelContainer(for: Achievement.self, configurations: config)
-        // Add sample data if needed for previewing interactions
-        // let sampleAchievement = Achievement(text: "Preview Achievement", timestamp: Date())
-        // container.mainContext.insert(sampleAchievement)
-
-        return AchievementEntryView()
-            .modelContainer(container)
-    } catch {
-        fatalError("Failed to create model container for preview: \(error)")
-    }
+    AchievementEntryView()
+        .modelContainer(for: Achievement.self, inMemory: true) // Add container for preview
 } 

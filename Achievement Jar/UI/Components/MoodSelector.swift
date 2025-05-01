@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct MoodSelector: View {
-    @Binding var selectedMood: String?
+    @Binding var selectedMoods: Set<String>
     
     // Emojis for each mood
     private let moodEmojis: [String: String] = [
@@ -35,10 +35,10 @@ struct MoodSelector: View {
         VStack {
             Button {
                 // Toggle selection
-                if selectedMood == mood.rawValue {
-                    selectedMood = nil
+                if selectedMoods.contains(mood.rawValue) {
+                    selectedMoods.remove(mood.rawValue)
                 } else {
-                    selectedMood = mood.rawValue
+                    selectedMoods.insert(mood.rawValue)
                 }
             } label: {
                 VStack {
@@ -47,19 +47,19 @@ struct MoodSelector: View {
                         .padding(10)
                         .background(
                             Circle()
-                                .fill(selectedMood == mood.rawValue ? 
+                                .fill(selectedMoods.contains(mood.rawValue) ? 
                                       Color.yellow.opacity(0.3) : 
                                       Color.gray.opacity(0.1))
                         )
                         .overlay(
                             Circle()
-                                .stroke(selectedMood == mood.rawValue ? .yellow : Color.clear, 
+                                .stroke(selectedMoods.contains(mood.rawValue) ? .yellow : Color.clear, 
                                         lineWidth: 2)
                         )
                     
                     Text(mood.rawValue)
                         .font(.caption)
-                        .foregroundColor(selectedMood == mood.rawValue ? .primary : .secondary)
+                        .foregroundColor(selectedMoods.contains(mood.rawValue) ? .primary : .secondary)
                 }
             }
             .buttonStyle(PlainButtonStyle())
@@ -68,11 +68,18 @@ struct MoodSelector: View {
 }
 
 #Preview {
-    @State var selectedMood: String? = nil
+    MoodSelectorPreview()
+}
+
+// Preview container struct
+struct MoodSelectorPreview: View {
+    @State private var selectedMoods: Set<String> = []
     
-    return VStack {
-        MoodSelector(selectedMood: $selectedMood)
-        Text("Selected: \(selectedMood ?? "None")")
+    var body: some View {
+        VStack {
+            MoodSelector(selectedMoods: $selectedMoods)
+            Text("Selected: \(selectedMoods.joined(separator: ", "))")
+        }
+        .padding()
     }
-    .padding()
 } 

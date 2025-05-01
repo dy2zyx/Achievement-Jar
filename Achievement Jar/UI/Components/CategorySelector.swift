@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CategorySelector: View {
-    @Binding var selectedCategory: String?
+    @Binding var selectedCategory: String
     
     // Background colors for each category button
     private let categoryColors: [String: Color] = [
@@ -33,12 +33,7 @@ struct CategorySelector: View {
     @ViewBuilder
     private func categoryButton(for category: AchievementCategory) -> some View {
         Button {
-            // Toggle selection - if already selected, deselect it
-            if selectedCategory == category.rawValue {
-                selectedCategory = nil
-            } else {
-                selectedCategory = category.rawValue
-            }
+            selectedCategory = category.rawValue
         } label: {
             Text(category.rawValue)
                 .padding(.horizontal, 12)
@@ -61,11 +56,18 @@ struct CategorySelector: View {
 }
 
 #Preview {
-    @State var selectedCategory: String? = nil
+    CategorySelectorPreview()
+}
+
+// Preview container struct
+struct CategorySelectorPreview: View {
+    @State private var selectedCategory: String = "Personal"
     
-    return VStack {
-        CategorySelector(selectedCategory: $selectedCategory)
-        Text("Selected: \(selectedCategory ?? "None")")
+    var body: some View {
+        VStack {
+            CategorySelector(selectedCategory: $selectedCategory)
+            Text("Selected: \(selectedCategory)")
+        }
+        .padding()
     }
-    .padding()
 } 
