@@ -136,13 +136,13 @@ Achievement Jar/
 #### Project Setup
 #### 项目设置
 
-- [ ] Restructure existing project files
-- [ ] Create SwiftData models for achievements
-- [ ] Create base UI theme (colors, fonts, common UI elements)
+- [x] Restructure existing project files
+- [x] Create SwiftData models for achievements
+- [x] Create base UI theme (colors, fonts, common UI elements)
 
-- [ ] 重组现有项目文件
-- [ ] 为成就创建SwiftData模型
-- [ ] 创建基本UI主题（颜色、字体、通用UI元素）
+- [x] 重组现有项目文件
+- [x] 为成就创建SwiftData模型
+- [x] 创建基本UI主题（颜色、字体、通用UI元素）
 
 #### Achievement Recording
 #### 成就记录
@@ -312,15 +312,15 @@ Achievement Jar/
 
 - [x] Create development plan
 - [x] Create individual feature markdown files
-- [ ] Restructure existing project architecture
-- [ ] Establish SwiftData model for achievements
-- [ ] Implement base UI theme
+- [x] Restructure existing project architecture
+- [x] Establish SwiftData model for achievements
+- [x] Implement base UI theme
 
 - [x] 创建开发计划
 - [x] 创建单独的功能Markdown文件
-- [ ] 重组现有项目架构
-- [ ] 建立成就的SwiftData模型
-- [ ] 实现基本UI主题
+- [x] 重组现有项目架构
+- [x] 建立成就的SwiftData模型
+- [x] 实现基本UI主题
 
 ### Week 1-2: Project Setup & Core Data Model
 ### 第1-2周：项目设置和核心数据模型
