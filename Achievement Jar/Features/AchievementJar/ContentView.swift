@@ -10,104 +10,86 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var achievements: [Achievement]
+    @Query(sort: \Achievement.date, order: .reverse) private var achievements: [Achievement]
     @State private var showingAddSheet = false
+    @State private var selectedTab: Tab = .jar // Default tab
 
-    var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(achievements) { achievement in
-                    NavigationLink {
-                        VStack(alignment: .leading, spacing: 15) {
-                            Text(achievement.content)
-                                .padding()
-                                .background(Color.gray.opacity(0.1))
-                                .cornerRadius(8)
-                            
-                            HStack {
-                                Text("Date: ")
-                                    .fontWeight(.bold)
-                                Text(achievement.date.formatted(date: .numeric, time: .standard))
-                            }
-                            
-                            HStack {
-                                Text("Category: ")
-                                    .fontWeight(.bold)
-                                Text(achievement.category)
-                            }
-                            
-                            if !achievement.moods.isEmpty {
-                                HStack {
-                                    Text("Moods: ")
-                                        .fontWeight(.bold)
-                                    Text(achievement.moods.joined(separator: ", "))
-                                }
-                            }
-                            
-                            Spacer()
-                        }
-                        .padding()
-                        .navigationTitle("Achievement Details")
-                    } label: {
-                        VStack(alignment: .leading) {
-                            Text(achievement.content)
-                                .lineLimit(1)
-                                .fontWeight(.medium)
-                            
-                            HStack {
-                                Text(achievement.date.formatted(.dateTime.day().month()))
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                
-                                Text("•")
-                                    .foregroundColor(.secondary)
-                                Text(achievement.category)
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                
-                                if !achievement.moods.isEmpty {
-                                    Text("•")
-                                        .foregroundColor(.secondary)
-                                    Text(achievement.moods.first ?? "")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                }
-                            }
-                        }
-                    }
-                }
-                .onDelete(perform: deleteAchievements)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button {
-                        showingAddSheet = true
-                    } label: {
-                        Label("Add Achievement", systemImage: "plus")
-                    }
-                }
-            }
-            .sheet(isPresented: $showingAddSheet) {
-                AchievementEntryView()
-            }
-        } detail: {
-            Text("Select an achievement")
-        }
+    // Enum for tab identification
+    enum Tab {
+        case jar
+        case list
     }
-
-    private func deleteAchievements(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(achievements[index])
+    
+    // Calculate fill percentage using the @Query result
+    private var fillPercentage: Double {
+        let count = achievements.count // Use count from @Query
+        let maxCapacity = 100.0 // Arbitrary max for fill calculation
+        return min(1.0, Double(count) / maxCapacity)
+    }
+    
+    var body: some View {
+        TabView(selection: $selectedTab) {
+            // --- Jar Tab ---
+            NavigationView {
+                VStack {
+                    // Achievement Count Display - Use count from @Query
+                    Text("Achievements: \(achievements.count)")
+                        .font(.headline)
+                        .padding(.top)
+                    
+                    Spacer()
+                    
+                    // Display the Jar View with dynamic fill
+                    FilledJarView(fillPercentage: fillPercentage)
+                        .frame(width: 250, height: 350)
+                        .padding(.bottom, 30)
+                    
+                    Spacer()
+                }
+                .navigationTitle("Achievement Jar")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            showingAddSheet = true
+                        } label: {
+                            Label("Add Achievement", systemImage: "plus")
+                        }
+                    }
+                }
             }
+            .tabItem {
+                Label("Jar", systemImage: "circle.grid.cross") // Example icon
+            }
+            .tag(Tab.jar)
+
+            // --- List Tab ---
+            NavigationView { // Embed list in its own NavigationView for title/toolbar
+                AchievementListView()
+            }
+            .tabItem {
+                Label("List", systemImage: "list.bullet")
+            }
+            .tag(Tab.list)
+        }
+        .sheet(isPresented: $showingAddSheet) {
+            AchievementEntryView()
+                .environment(\.modelContext, modelContext)
         }
     }
 }
 
 #Preview {
-    ContentView()
-        .modelContainer(for: Achievement.self, inMemory: true)
+    // Setup in-memory container for preview
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Achievement.self, configurations: config)
+    
+    // Add sample data for preview
+    let sampleAchievements = [
+        Achievement(content: "Preview 1", category: "Personal", moods: ["Happy"]),
+        Achievement(content: "Preview 2", category: "Work", moods: ["Proud"])
+    ]
+    sampleAchievements.forEach { container.mainContext.insert($0) }
+    
+    return ContentView()
+        .modelContainer(container)
 }
