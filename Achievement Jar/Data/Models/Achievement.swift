@@ -25,17 +25,21 @@ enum MoodTag: String, Codable, CaseIterable, Identifiable {
 
 @Model
 final class Achievement {
+    @Attribute(.unique) var id: UUID
     var content: String
     var category: String
     var moods: Set<String>
     var date: Date
+    var lastRetrievedDate: Date?
     var isArchived: Bool
     
-    init(content: String, category: String, moods: Set<String>, date: Date = Date(), isArchived: Bool = false) {
+    init(id: UUID = UUID(), content: String, category: String, moods: Set<String>, date: Date = Date(), lastRetrievedDate: Date? = nil, isArchived: Bool = false) {
+        self.id = id
         self.content = content
         self.category = category
         self.moods = moods
         self.date = date
+        self.lastRetrievedDate = lastRetrievedDate
         self.isArchived = isArchived
     }
 } 

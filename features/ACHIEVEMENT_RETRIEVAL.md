@@ -8,43 +8,46 @@ This feature implements a system for randomly pulling past achievements for revi
 ## 已完成任务
 
 - [x] Design feature concept and user flow
+- [x] Design retrieval algorithm requirements
+- [x] Create UI mockup for retrieved achievement display (basic view created)
+- [x] Implement random selection algorithm (weighted, non-repeating within session)
+- [x] Build retrieved achievement detail view
+- [x] Add manual retrieval trigger gesture (button added)
+
 - [x] 设计功能概念和用户流程
+- [x] 设计提取算法需求
+- [x] 创建已提取成就显示的UI模型 (已创建基本视图)
+- [x] 实现随机选择算法 (加权, 会话内不重复)
+- [x] 构建已提取成就详情视图
+- [x] 添加手动提取触发手势 (已添加按钮)
 
 ## In Progress Tasks
 ## 进行中任务
 
-- [ ] Design retrieval algorithm requirements
-- [ ] Create UI mockup for retrieved achievement display
 - [ ] Define retrieval frequency options
+- [ ] Implement retrieval animation (basic feedback added)
+- [ ] Create retrieval history tracking
 
-- [ ] 设计提取算法需求
-- [ ] 创建已提取成就显示的UI模型
 - [ ] 定义提取频率选项
+- [ ] 实现提取动画 (已添加基本反馈)
+- [ ] 创建提取历史跟踪
 
 ## Future Tasks
 ## 未来任务
 
-- [ ] Implement random selection algorithm with non-repetition
 - [ ] Create daily retrieval scheduler
-- [ ] Design and implement retrieval animation
-- [ ] Build retrieved achievement detail view
-- [ ] Add manual retrieval trigger gesture
 - [ ] Implement notification for daily retrieval
-- [ ] Create retrieval history tracking
 - [ ] Add reflection/note option for retrieved achievements
 - [ ] Create unit tests for retrieval algorithm
 - [ ] Add UI tests for retrieval interaction
+- [ ] Persist recently retrieved IDs across sessions (using UserDefaults)
 
-- [ ] 实现具有非重复性的随机选择算法
 - [ ] 创建每日提取调度程序
-- [ ] 设计和实现提取动画
-- [ ] 构建已提取成就详情视图
-- [ ] 添加手动提取触发手势
 - [ ] 实现每日提取通知
-- [ ] 创建提取历史跟踪
 - [ ] 为已提取成就添加反思/笔记选项
 - [ ] 创建提取算法的单元测试
 - [ ] 添加提取交互的UI测试
+- [ ] 跨会话持久化最近提取的ID (使用 UserDefaults)
 
 ## Implementation Plan
 ## 实施计划

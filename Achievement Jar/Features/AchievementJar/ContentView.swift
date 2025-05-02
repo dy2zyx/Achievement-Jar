@@ -12,7 +12,14 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Achievement.date, order: .reverse) private var achievements: [Achievement]
     @State private var showingAddSheet = false
-    @State private var selectedTab: Tab = .jar // Default tab
+    @State private var selectedTab: Tab = .jar
+    
+    // State for retrieval
+    @State private var retrievedAchievement: Achievement? = nil
+    @State private var showingRetrievedSheet: Bool = false
+    
+    // Instance of the retrieval algorithm
+    private let retrievalAlgorithm = RetrievalAlgorithm()
 
     // Enum for tab identification
     enum Tab {
@@ -22,29 +29,43 @@ struct ContentView: View {
     
     // Calculate fill percentage using the @Query result
     private var fillPercentage: Double {
-        let count = achievements.count // Use count from @Query
-        let maxCapacity = 100.0 // Arbitrary max for fill calculation
+        let count = achievements.count
+        let maxCapacity = 100.0
         return min(1.0, Double(count) / maxCapacity)
     }
+    
+    @State private var isRetrieving: Bool = false // State for animation
     
     var body: some View {
         TabView(selection: $selectedTab) {
             // --- Jar Tab ---
             NavigationView {
                 VStack {
-                    // Achievement Count Display - Use count from @Query
                     Text("Achievements: \(achievements.count)")
                         .font(.headline)
                         .padding(.top)
                     
                     Spacer()
                     
-                    // Display the Jar View with dynamic fill
                     FilledJarView(fillPercentage: fillPercentage)
                         .frame(width: 250, height: 350)
                         .padding(.bottom, 30)
                     
                     Spacer()
+                    
+                    // Manual Retrieval Button with feedback
+                    Button {
+                        // Prevent rapid clicks
+                        guard !isRetrieving else { return }
+                        retrieveAchievement()
+                    } label: {
+                        Label(isRetrieving ? "Remembering..." : "Retrieve Memory", 
+                              systemImage: isRetrieving ? "hourglass" : "sparkles.rectangle.stack")
+                    }
+                    .buttonStyle(.bordered)
+                    .padding(.bottom)
+                    .disabled(isRetrieving) // Disable while retrieving
+                    .opacity(isRetrieving ? 0.7 : 1.0) // Dim slightly
                 }
                 .navigationTitle("Achievement Jar")
                 .toolbar {
@@ -58,12 +79,12 @@ struct ContentView: View {
                 }
             }
             .tabItem {
-                Label("Jar", systemImage: "circle.grid.cross") // Example icon
+                Label("Jar", systemImage: "circle.grid.cross")
             }
             .tag(Tab.jar)
 
             // --- List Tab ---
-            NavigationView { // Embed list in its own NavigationView for title/toolbar
+            NavigationView { 
                 AchievementListView()
             }
             .tabItem {
@@ -75,15 +96,42 @@ struct ContentView: View {
             AchievementEntryView()
                 .environment(\.modelContext, modelContext)
         }
+        // Sheet to display the retrieved achievement
+        .sheet(item: $retrievedAchievement) { achievement in
+            // The sheet is presented when retrievedAchievement is not nil
+            RetrievedAchievementView(achievement: achievement)
+        }
+    }
+    
+    // Updated retrieval function with animation state
+    private func retrieveAchievement() {
+        guard !achievements.isEmpty else {
+            print("No achievements to retrieve.")
+            return
+        }
+        
+        // Start animation state
+        isRetrieving = true
+        
+        // Add a small delay for visual effect
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if let achievementToView = retrievalAlgorithm.retrieveRandomAchievement(from: achievements) {
+                achievementToView.lastRetrievedDate = Date()
+                self.retrievedAchievement = achievementToView
+            } else {
+                print("Failed to retrieve an achievement.")
+                // Handle error, maybe show an alert
+            }
+            // End animation state
+            isRetrieving = false
+        }
     }
 }
 
 #Preview {
-    // Setup in-memory container for preview
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Achievement.self, configurations: config)
     
-    // Add sample data for preview
     let sampleAchievements = [
         Achievement(content: "Preview 1", category: "Personal", moods: ["Happy"]),
         Achievement(content: "Preview 2", category: "Work", moods: ["Proud"])

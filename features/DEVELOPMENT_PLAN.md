@@ -148,13 +148,13 @@ Achievement Jar/
 #### 成就记录
 
 - [x] Design and implement text entry UI
-- [x] Add character limit functionality (150-200 characters)
+- [x] Add character limit functionality (600 characters)
 - [x] Implement basic categorization
 - [x] Create date selection/override
 - [x] Design and implement simple "add to jar" animation
 
 - [x] 设计和实现文本输入UI
-- [x] 添加字符限制功能（150-200字符）
+- [x] 添加字符限制功能（600 字符）
 - [x] 实现基本分类
 - [x] 创建日期选择/覆盖
 - [x] 设计和实现简单的"添加到罐子"动画
@@ -175,13 +175,13 @@ Achievement Jar/
 #### Achievement Retrieval
 #### 成就提取
 
-- [ ] Implement random retrieval algorithm
-- [ ] Create basic UI for viewing retrieved achievements
-- [ ] Add manual retrieval option
+- [x] Implement random retrieval algorithm (weighted)
+- [x] Create basic UI for viewing retrieved achievements
+- [x] Add manual retrieval option
 
-- [ ] 实现随机提取算法
-- [ ] 创建查看提取成就的基本UI
-- [ ] 添加手动提取选项
+- [x] 实现随机提取算法 (加权)
+- [x] 创建查看提取成就的基本UI
+- [x] 添加手动提取选项
 
 #### Achievement Review
 #### 成就回顾
