@@ -188,11 +188,11 @@ Achievement Jar/
 
 - [x] Create simple list view of past achievements
 - [x] Implement basic filtering by date (predefined periods)
-- [ ] Design achievement detail view
+- [x] Design achievement detail view
 
 - [x] 创建过去成就的简单列表视图
 - [x] 实现按日期的基本筛选 (预定义时段)
-- [ ] 设计成就详情视图
+- [x] 设计成就详情视图
 
 ### Phase 2: Enhanced Experience
 ### 阶段2：增强体验

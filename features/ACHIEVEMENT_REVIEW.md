@@ -13,7 +13,8 @@ This feature provides an interface for reviewing past achievements, allowing use
 - [x] Implement basic date filtering (predefined periods)
 - [x] Create list view with sorting options (initial reverse date sort)
 - [x] Build achievement detail view
-
+- [x] Create achievement detail view concept (Basic view done)
+  
 - [x] 定义回顾功能范围和需求
 - [x] 设计成就列表视图布局
 - [x] 规划筛选和排序选项
@@ -24,8 +25,8 @@ This feature provides an interface for reviewing past achievements, allowing use
 ## In Progress Tasks
 ## 进行中任务
 
-- [ ] Create achievement detail view concept (Basic view done)
-- [ ] 设计成就详情视图概念 (已完成基本视图)
+
+
 
 ## Future Tasks
 ## 未来任务
