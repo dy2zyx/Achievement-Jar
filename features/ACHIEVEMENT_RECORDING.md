@@ -9,18 +9,26 @@ This feature allows users to create short "achievement notes" to document positi
 
 - [x] Design feature architecture and user flow
 - [x] Create basic UI for achievement entry screen (AchievementEntryView.swift)
-- [x] Implement text entry field with character limit (150-200 chars)
+- [x] Implement text entry field with character limit (600 chars)
 - [x] Design category selection component
 - [x] Create mood/emotion tag selector
 - [x] Implement date selection/override functionality
 - [x] Create "add to jar" animation
+- [x] Implement SwiftData integration for storing achievements
+- [x] Add input validation (character limit, empty check)
+- [x] Add UI tests for achievement entry flow (character limit, button state)
+- [x] Create unit tests for achievement creation (model initialization)
 - [x] 设计功能架构和用户流程
 - [x] 创建成就输入屏幕的基本UI (AchievementEntryView.swift)
-- [x] 实现带字符限制的文本输入字段（150-200字符）
+- [x] 实现带字符限制的文本输入字段（600字符）
 - [x] 设计类别选择组件
 - [x] 创建心情/情绪标签选择器
 - [x] 实现日期选择/覆盖功能
 - [x] 创建"添加到罐子"动画
+- [x] 实现用于存储成就的SwiftData集成
+- [x] 添加输入验证 (字符限制, 空白检查)
+- [x] 添加成就输入流程的UI测试 (字符限制, 按钮状态)
+- [x] 创建成就创建的单元测试 (模型初始化)
 
 ## In Progress Tasks
 ## 进行中任务
@@ -28,15 +36,8 @@ This feature allows users to create short "achievement notes" to document positi
 ## Future Tasks
 ## 未来任务
 
-- [ ] Add input validation
-- [ ] Implement SwiftData integration for storing achievements
-- [ ] Create unit tests for achievement creation
-- [ ] Add UI tests for achievement entry flow
 
-- [ ] 添加输入验证
-- [ ] 实现用于存储成就的SwiftData集成
-- [ ] 创建成就创建的单元测试
-- [ ] 添加成就输入流程的UI测试
+
 
 ## Implementation Plan
 ## 实施计划
@@ -44,38 +45,38 @@ This feature allows users to create short "achievement notes" to document positi
 The Achievement Recording feature will be implemented using a MVVM pattern:
 成就记录功能将使用MVVM模式实现：
 
-1. **Model**: Create Achievement data model with properties for text, category, mood, date, and unique identifier
-2. **ViewModel**: Implement AchievementEntryViewModel to handle validation, character counting, and data persistence
-3. **View**: Design AchievementEntryView with text input, category buttons, mood selector, and submit button
-4. **Animation**: Create custom animation for when achievement is added to jar
-5. **Data Layer**: Implement Repository pattern to abstract SwiftData operations
+1.  **Model**: Create Achievement data model with properties for text, category, mood, date, and unique identifier
+2.  **ViewModel**: Implement AchievementEntryViewModel to handle validation, character counting, and data persistence
+3.  **View**: Design AchievementEntryView with text input, category buttons, mood selector, and submit button
+4.  **Animation**: Create custom animation for when achievement is added to jar
+5.  **Data Layer**: Implement Repository pattern to abstract SwiftData operations
 
-1. **模型**：创建具有文本、类别、心情、日期和唯一标识符属性的成就数据模型
-2. **视图模型**：实现AchievementEntryViewModel以处理验证、字符计数和数据持久化
-3. **视图**：设计具有文本输入、类别按钮、心情选择器和提交按钮的AchievementEntryView
-4. **动画**：为成就添加到罐子时创建自定义动画
-5. **数据层**：实现存储库模式以抽象SwiftData操作
+1.  **模型**：创建具有文本、类别、心情、日期和唯一标识符属性的成就数据模型
+2.  **视图模型**：实现AchievementEntryViewModel以处理验证、字符计数和数据持久化
+3.  **视图**：设计具有文本输入、类别按钮、心情选择器和提交按钮的AchievementEntryView
+4.  **动画**：为成就添加到罐子时创建自定义动画
+5.  **数据层**：实现存储库模式以抽象SwiftData操作
 
 ### User Flow
 ### 用户流程
 
-1. User taps "Add Achievement" from main screen
-2. Achievement entry screen appears with text field focused
-3. User enters achievement text (with character counter)
-4. User selects optional category and mood/emotion
-5. User taps "Save" button
-6. Validation occurs
-7. Animation shows achievement being added to jar
-8. User is returned to main screen with success feedback
+1.  User taps "Add Achievement" from main screen
+2.  Achievement entry screen appears with text field focused
+3.  User enters achievement text (with character counter)
+4.  User selects optional category and mood/emotion
+5.  User taps "Save" button
+6.  Validation occurs
+7.  Animation shows achievement being added to jar
+8.  User is returned to main screen with success feedback
 
-1. 用户从主屏幕点击"添加成就"
-2. 成就输入屏幕出现，文本字段获得焦点
-3. 用户输入成就文本（带字符计数器）
-4. 用户选择可选的类别和心情/情绪
-5. 用户点击"保存"按钮
-6. 进行验证
-7. 动画显示成就被添加到罐子中
-8. 用户返回主屏幕并收到成功反馈
+1.  用户从主屏幕点击"添加成就"
+2.  成就输入屏幕出现，文本字段获得焦点
+3.  用户输入成就文本（带字符计数器）
+4.  用户选择可选的类别和心情/情绪
+5.  用户点击"保存"按钮
+6.  进行验证
+7.  动画显示成就被添加到罐子中
+8.  用户返回主屏幕并收到成功反馈
 
 ### Relevant Files
 ### 相关文件
@@ -90,8 +91,8 @@ The Achievement Recording feature will be implemented using a MVVM pattern:
 - `UI/Components/MoodSelector.swift` - Reusable mood selection component 可重用心情选择组件
 - `Core/Extensions/String+CharacterCount.swift` - Extension for character counting 字符计数扩展
 
-### SwiftData Model
-### SwiftData模型
+### SwiftData Model (Updated)
+### SwiftData模型 (已更新)
 
 ```swift
 import SwiftData
@@ -99,19 +100,18 @@ import Foundation
 
 @Model
 final class Achievement {
-    var text: String
-    var category: String?
-    var mood: String?
-    var timestamp: Date
-    var isRetrieved: Bool
-    var lastRetrievedDate: Date?
+    var content: String
+    var category: String
+    var moods: Set<String>
+    var date: Date
+    var isArchived: Bool
     
-    init(text: String, category: String? = nil, mood: String? = nil, timestamp: Date = Date(), isRetrieved: Bool = false) {
-        self.text = text
+    init(content: String, category: String, moods: Set<String>, date: Date = Date(), isArchived: Bool = false) {
+        self.content = content
         self.category = category
-        self.mood = mood
-        self.timestamp = timestamp
-        self.isRetrieved = isRetrieved
+        self.moods = moods
+        self.date = date
+        self.isArchived = isArchived
     }
 }
 ``` 

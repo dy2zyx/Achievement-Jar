@@ -23,13 +23,13 @@ final class AchievementEntryViewUITests: XCTestCase {
         let textEditor = app.textViews["achievementContentTextEditor"]
         XCTAssertTrue(textEditor.waitForExistence(timeout: 5), "Text editor should exist")
         
-        let longText = String(repeating: "a", count: 250)
+        let longText = String(repeating: "a", count: 650)
         textEditor.tap()
         textEditor.typeText(longText)
         
         // Verify text is truncated in the text editor's value
         let editorValue = textEditor.value as? String ?? ""
-        XCTAssertEqual(editorValue.count, 200, "Text should be truncated to 200 characters")
+        XCTAssertEqual(editorValue.count, 600, "Text should be truncated to 600 characters")
     }
     
     func testCharacterCount_UpdatesCorrectly() throws {
@@ -39,20 +39,20 @@ final class AchievementEntryViewUITests: XCTestCase {
         XCTAssertTrue(charCountText.waitForExistence(timeout: 1), "Character count should exist")
 
         // Initial state
-        XCTAssertEqual(charCountText.label, "0/200")
+        XCTAssertEqual(charCountText.label, "0/600")
         
         // Type some text
         textEditor.tap()
         textEditor.typeText("Hello")
-        XCTAssertEqual(charCountText.label, "5/200")
+        XCTAssertEqual(charCountText.label, "5/600")
         
         // Type long text
-        textEditor.typeText(String(repeating: "b", count: 190)) // Total 195
-        XCTAssertEqual(charCountText.label, "195/200")
+        textEditor.typeText(String(repeating: "b", count: 590)) // Total 595
+        XCTAssertEqual(charCountText.label, "595/600")
         
         // Try typing past the limit
-        textEditor.typeText("abcdefghij") // Should stop at 200
-        XCTAssertEqual(charCountText.label, "200/200")
+        textEditor.typeText("abcdefghij") // Should stop at 600
+        XCTAssertEqual(charCountText.label, "600/600")
     }
     
     func testAddButton_DisabledWhenEmpty() throws {

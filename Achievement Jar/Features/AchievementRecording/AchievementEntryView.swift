@@ -13,8 +13,8 @@ struct AchievementEntryView: View {
     @State private var showingAnimation: Bool = false
     
     // Character limit constants
-    private let characterLimit = 200
-    private let warningThreshold = 180 // Start showing warning color when approaching limit
+    private let characterLimit = 600
+    private let warningThreshold = 540 // Start showing warning color when approaching limit
     
     // Computed property for current character count
     private var characterCount: Int {
