@@ -8,27 +8,31 @@ This feature provides a visually appealing jar that stores all achievements, wit
 ## 已完成任务
 
 - [x] Research jar visualization techniques and animation approaches
+- [x] Design jar visualization concept with Ghibli-inspired aesthetic
+- [x] Create basic jar UI component
+- [x] Implement jar filling visualization logic
+- [x] Implement achievement counter display
+- [x] Connect storage with SwiftData (via @Query)
+
 - [x] 研究罐子可视化技术和动画方法
+- [x] 设计具有吉卜力风格美学的罐子可视化概念
+- [x] 创建基本罐子UI组件
+- [x] 实现罐子填充可视化逻辑
+- [x] 实现成就计数器显示
+- [x] 将存储与SwiftData连接 (通过 @Query)
 
 ## In Progress Tasks
 ## 进行中任务
 
-- [ ] Design jar visualization concept with Ghibli-inspired aesthetic
-- [ ] Create basic jar UI component
-- [ ] Implement jar filling visualization logic
-
-- [ ] 设计具有吉卜力风格美学的罐子可视化概念
-- [ ] 创建基本罐子UI组件
-- [ ] 实现罐子填充可视化逻辑
+- [ ] Implement jar interaction gestures (tap stats, shake, long press retrieval)
+- [ ] 实现罐子交互手势（点击统计、摇晃、长按提取）
 
 ## Future Tasks
 ## 未来任务
 
 - [ ] Create smooth animations for jar interactions
 - [ ] Design visual indicators for jar fullness
-- [ ] Implement achievement counter display
 - [ ] Create particle effects for jar glow/highlighting
-- [ ] Implement jar interaction gestures (shake, tap, etc.)
 - [ ] Design achievement density visualization
 - [ ] Add jar customization options (Phase 3)
 - [ ] Create unit tests for jar visualization logic
@@ -36,9 +40,7 @@ This feature provides a visually appealing jar that stores all achievements, wit
 
 - [ ] 创建罐子交互的流畅动画
 - [ ] 设计罐子满度的视觉指示器
-- [ ] 实现成就计数器显示
 - [ ] 创建罐子发光/高亮的粒子效果
-- [ ] 实现罐子交互手势（摇晃、点击等）
 - [ ] 设计成就密度可视化
 - [ ] 添加罐子自定义选项（第3阶段）
 - [ ] 创建罐子可视化逻辑的单元测试

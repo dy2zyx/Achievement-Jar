@@ -162,15 +162,15 @@ Achievement Jar/
 #### Achievement Jar Storage
 #### 成就罐存储
 
-- [ ] Design jar visualization
-- [ ] Implement jar filling animation
-- [ ] Create achievement counter
-- [ ] Connect storage with SwiftData
+- [x] Design jar visualization
+- [x] Implement jar filling logic (basic)
+- [x] Create achievement counter
+- [x] Connect storage with SwiftData
 
-- [ ] 设计罐子可视化
-- [ ] 实现罐子填充动画
-- [ ] 创建成就计数器
-- [ ] 将存储与SwiftData连接
+- [x] 设计罐子可视化
+- [x] 实现罐子填充逻辑 (基本)
+- [x] 创建成就计数器
+- [x] 将存储与SwiftData连接
 
 #### Achievement Retrieval
 #### 成就提取
