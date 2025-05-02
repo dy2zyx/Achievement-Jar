@@ -21,21 +21,24 @@ struct JarAdditionAnimation: View {
                 VStack {
                     Spacer()
                     
-                    // The jar image
-                    Image(systemName: "archivebox.fill") // Temporary system icon as placeholder
+                    // The bottle image - Updated to use the new image
+                    Image("bottle_empty")
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 120, height: 120)
-                        .foregroundColor(.blue.opacity(0.7))
+                        .aspectRatio(1/2.5, contentMode: .fit)
+                        .frame(width: 120)
                         .scaleEffect(jarScale)
                         .animation(.spring(response: 0.3, dampingFraction: 0.6), value: jarScale)
                         .padding(.bottom, 50)
                 }
                 .frame(maxWidth: .infinity)
                 
-                // The achievement note
+                // The achievement note - updated with more paper-like appearance
                 RoundedRectangle(cornerRadius: 8)
                     .fill(Color.white)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                    )
                     .frame(width: 60, height: 40)
                     .shadow(radius: 3)
                     .rotationEffect(.degrees(noteRotation))

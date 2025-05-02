@@ -70,6 +70,7 @@ struct JarShapeView: Shape {
     }
 }
 
+// DEPRECATED: This view is being replaced by BottleImageView which uses the new image assets.
 // View that uses the JarShape to draw a filled and outlined jar
 struct FilledJarView: View {
     var fillPercentage: Double // How full the jar is (0.0 to 1.0)

@@ -34,6 +34,17 @@ struct ContentView: View {
         return min(1.0, Double(count) / maxCapacity)
     }
     
+    // Determine bottle state based on fill percentage
+    private var bottleState: BottleImageView.BottleState {
+        if fillPercentage <= 0.33 {
+            return .empty
+        } else if fillPercentage <= 0.66 {
+            return .half
+        } else {
+            return .full
+        }
+    }
+    
     @State private var isRetrieving: Bool = false // State for animation
     
     var body: some View {
@@ -47,8 +58,9 @@ struct ContentView: View {
                     
                     Spacer()
                     
-                    FilledJarView(fillPercentage: fillPercentage)
-                        .frame(width: 250, height: 350)
+                    // Updated to use the new BottleImageView
+                    BottleImageView(fillPercentage: fillPercentage, bottleState: bottleState)
+                        .frame(height: 350)
                         .padding(.bottom, 30)
                     
                     Spacer()
