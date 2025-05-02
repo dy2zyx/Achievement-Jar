@@ -8,26 +8,30 @@ This feature provides an interface for reviewing past achievements, allowing use
 ## 已完成任务
 
 - [x] Define review feature scope and requirements
+- [x] Design achievement list view layout
+- [x] Plan filtering and sorting options
+- [x] Implement basic date filtering (predefined periods)
+- [x] Create list view with sorting options (initial reverse date sort)
+- [x] Build achievement detail view
+
 - [x] 定义回顾功能范围和需求
+- [x] 设计成就列表视图布局
+- [x] 规划筛选和排序选项
+- [x] 实现基本日期筛选 (预定义时段)
+- [x] 创建带排序选项的列表视图 (初始日期倒序)
+- [x] 构建包含完整信息的成就详情视图 (基本详情视图)
 
 ## In Progress Tasks
 ## 进行中任务
 
-- [ ] Design achievement list view layout
-- [ ] Create achievement detail view concept
-- [ ] Plan filtering and sorting options
-
-- [ ] 设计成就列表视图布局
-- [ ] 创建成就详情视图概念
-- [ ] 规划筛选和排序选项
+- [ ] Create achievement detail view concept (Basic view done)
+- [ ] 设计成就详情视图概念 (已完成基本视图)
 
 ## Future Tasks
 ## 未来任务
 
 - [ ] Implement calendar view for achievement browsing
-- [ ] Create list view with sorting options
-- [ ] Build achievement detail view with full information
-- [ ] Implement category and date filtering
+- [ ] Implement category filtering
 - [ ] Add search functionality
 - [ ] Create smooth transitions and animations
 - [ ] Implement favorite/highlighting feature
@@ -37,9 +41,7 @@ This feature provides an interface for reviewing past achievements, allowing use
 - [ ] Add UI tests for review interactions
 
 - [ ] 实现成就浏览的日历视图
-- [ ] 创建带排序选项的列表视图
-- [ ] 构建包含完整信息的成就详情视图
-- [ ] 实现类别和日期筛选
+- [ ] 实现类别筛选
 - [ ] 添加搜索功能
 - [ ] 创建流畅的过渡和动画
 - [ ] 实现收藏/高亮功能
