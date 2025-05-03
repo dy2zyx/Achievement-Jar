@@ -2,12 +2,18 @@ import SwiftUI
 
 struct JarAdditionAnimation: View {
     @Binding var isAnimating: Bool
+    var isFirstAchievement: Bool = true // Whether this is the first achievement
     var onComplete: () -> Void = {}
     
     @State private var noteOffset: CGSize = CGSize(width: 0, height: -300)
     @State private var noteRotation: Double = 0
     @State private var noteOpacity: Double = 0
     @State private var jarScale: CGFloat = 1.0
+    
+    // Determine which bottle image to use - without stopper for animation
+    private var bottleImage: String {
+        return isFirstAchievement ? "bottle_empty_without_stopper" : "bottle_filled_without_stopper"
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -21,8 +27,8 @@ struct JarAdditionAnimation: View {
                 VStack {
                     Spacer()
                     
-                    // The bottle image - Updated to use the new image
-                    Image("bottle_empty")
+                    // The bottle image - Using the appropriate bottle without stopper
+                    Image(bottleImage)
                         .resizable()
                         .aspectRatio(1/2.5, contentMode: .fit)
                         .frame(width: 120)
@@ -32,14 +38,11 @@ struct JarAdditionAnimation: View {
                 }
                 .frame(maxWidth: .infinity)
                 
-                // The achievement note - updated with more paper-like appearance
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.white)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                    )
-                    .frame(width: 60, height: 40)
+                // The achievement note - using the actual achievement_note asset
+                Image("achievement_note")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 60)
                     .shadow(radius: 3)
                     .rotationEffect(.degrees(noteRotation))
                     .offset(noteOffset)
@@ -99,12 +102,18 @@ struct JarAdditionAnimation: View {
 // Preview container struct
 struct JarAdditionAnimationPreview: View {
     @State private var isAnimating = false
+    @State private var isFirstAchievement = true
     
     var body: some View {
         ZStack {
             Color.gray.opacity(0.2)
             
             VStack {
+                Toggle("First Achievement", isOn: $isFirstAchievement)
+                    .padding()
+                    .background(Color.white.opacity(0.8))
+                    .cornerRadius(8)
+                
                 Button("Start Animation") {
                     isAnimating = true
                 }
@@ -114,7 +123,10 @@ struct JarAdditionAnimationPreview: View {
                 .cornerRadius(8)
             }
             
-            JarAdditionAnimation(isAnimating: $isAnimating) {
+            JarAdditionAnimation(
+                isAnimating: $isAnimating,
+                isFirstAchievement: isFirstAchievement
+            ) {
                 print("Animation completed")
                 isAnimating = false
             }

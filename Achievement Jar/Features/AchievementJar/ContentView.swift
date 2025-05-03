@@ -34,15 +34,9 @@ struct ContentView: View {
         return min(1.0, Double(count) / maxCapacity)
     }
     
-    // Determine bottle state based on fill percentage
-    private var bottleState: BottleImageView.BottleState {
-        if fillPercentage <= 0.33 {
-            return .empty
-        } else if fillPercentage <= 0.66 {
-            return .half
-        } else {
-            return .full
-        }
+    // Check if achievements list is empty
+    private var isAchievementsEmpty: Bool {
+        achievements.isEmpty
     }
     
     @State private var isRetrieving: Bool = false // State for animation
@@ -58,10 +52,14 @@ struct ContentView: View {
                     
                     Spacer()
                     
-                    // Updated to use the new BottleImageView
-                    BottleImageView(fillPercentage: fillPercentage, bottleState: bottleState)
-                        .frame(height: 350)
-                        .padding(.bottom, 30)
+                    // Updated to use the new BottleImageView parameters
+                    BottleImageView(
+                        fillPercentage: fillPercentage,
+                        isEmpty: isAchievementsEmpty,
+                        withStopper: true // Always show with stopper in main view
+                    )
+                    .frame(height: 350)
+                    .padding(.bottom, 30)
                     
                     Spacer()
                     
@@ -76,8 +74,8 @@ struct ContentView: View {
                     }
                     .buttonStyle(.bordered)
                     .padding(.bottom)
-                    .disabled(isRetrieving) // Disable while retrieving
-                    .opacity(isRetrieving ? 0.7 : 1.0) // Dim slightly
+                    .disabled(isRetrieving || isAchievementsEmpty) // Disable while retrieving or if empty
+                    .opacity((isRetrieving || isAchievementsEmpty) ? 0.7 : 1.0) // Dim when disabled
                 }
                 .navigationTitle("Achievement Jar")
                 .toolbar {
@@ -105,7 +103,7 @@ struct ContentView: View {
             .tag(Tab.list)
         }
         .sheet(isPresented: $showingAddSheet) {
-            AchievementEntryView()
+            AchievementEntryView(isFirstAchievement: isAchievementsEmpty)
                 .environment(\.modelContext, modelContext)
         }
         // Sheet to display the retrieved achievement

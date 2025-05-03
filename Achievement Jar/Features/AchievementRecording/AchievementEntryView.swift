@@ -5,6 +5,9 @@ struct AchievementEntryView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
+    // Parameter that indicates if this is the first achievement being added
+    var isFirstAchievement: Bool = true
+    
     @State private var content: String = ""
     @State private var selectedCategory: String = "Personal"
     @State private var selectedMoods: Set<String> = []
@@ -143,10 +146,14 @@ struct AchievementEntryView: View {
             }
             
             // Overlay the animation when active
-            JarAdditionAnimation(isAnimating: $showingAnimation) {
-                // Animation completed callback
-                saveAchievementAndDismiss() // Save and dismiss after animation
-            }
+            JarAdditionAnimation(
+                isAnimating: $showingAnimation,
+                isFirstAchievement: isFirstAchievement,
+                onComplete: {
+                    // Animation completed callback
+                    saveAchievementAndDismiss() // Save and dismiss after animation
+                }
+            )
         }
     }
     
@@ -174,6 +181,17 @@ struct AchievementEntryView: View {
 }
 
 #Preview {
-    AchievementEntryView()
-        .modelContainer(for: Achievement.self, inMemory: true) // Add container for preview
+    // Preview with both states
+    VStack {
+        Text("First Achievement")
+            .font(.headline)
+        AchievementEntryView(isFirstAchievement: true)
+            .frame(height: 300)
+            
+        Text("Subsequent Achievement")
+            .font(.headline)
+        AchievementEntryView(isFirstAchievement: false)
+            .frame(height: 300)
+    }
+    .modelContainer(for: Achievement.self, inMemory: true)
 } 
