@@ -24,6 +24,7 @@ struct ContentView: View {
     // Enum for tab identification
     enum Tab {
         case jar
+        case add // Add tab positioned in the middle
         case list
     }
     
@@ -78,20 +79,22 @@ struct ContentView: View {
                     .opacity((isRetrieving || isAchievementsEmpty) ? 0.7 : 1.0) // Dim when disabled
                 }
                 .navigationTitle("Achievement Jar")
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button {
-                            showingAddSheet = true
-                        } label: {
-                            Label("Add Achievement", systemImage: "plus")
-                        }
-                    }
-                }
             }
             .tabItem {
                 Label("Jar", systemImage: "circle.grid.cross")
             }
             .tag(Tab.jar)
+            
+            // --- Add Button (Middle Tab) ---
+            // Using an empty view since this tab is just for opening the sheet
+            Color.clear
+                .tabItem {
+                    Image("add_button")
+                        .renderingMode(.original) // Allow system to tint it
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                }
+                .tag(Tab.add)
 
             // --- List Tab ---
             NavigationView { 
@@ -101,6 +104,14 @@ struct ContentView: View {
                 Label("List", systemImage: "list.bullet")
             }
             .tag(Tab.list)
+        }
+        .onChange(of: selectedTab) { oldValue, newValue in
+            // If the add tab is selected, show the add sheet
+            if newValue == .add {
+                showingAddSheet = true
+                // Reset the selected tab to jar
+                selectedTab = oldValue == .list ? .list : .jar
+            }
         }
         .sheet(isPresented: $showingAddSheet) {
             AchievementEntryView(isFirstAchievement: isAchievementsEmpty)
