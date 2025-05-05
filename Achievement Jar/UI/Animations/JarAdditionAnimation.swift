@@ -30,7 +30,7 @@ struct JarAdditionAnimation: View {
                     // The bottle image - Using the appropriate bottle without stopper
                     Image(bottleImage)
                         .resizable()
-                        .aspectRatio(1/2.5, contentMode: .fit)
+                        .scaledToFit()
                         .frame(width: 120)
                         .scaleEffect(jarScale)
                         .animation(.spring(response: 0.3, dampingFraction: 0.6), value: jarScale)

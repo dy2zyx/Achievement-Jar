@@ -24,7 +24,6 @@ struct ContentView: View {
     // Enum for tab identification
     enum Tab {
         case jar
-        case add // Add tab positioned in the middle
         case list
     }
     
@@ -60,24 +59,41 @@ struct ContentView: View {
                         withStopper: true // Always show with stopper in main view
                     )
                     .frame(height: 350)
-                    .padding(.bottom, 30)
                     
-                    Spacer()
+                    Spacer() // Pushes buttons towards the bottom
                     
-                    // Manual Retrieval Button with feedback
-                    Button {
-                        // Prevent rapid clicks
-                        guard !isRetrieving else { return }
-                        retrieveAchievement()
-                    } label: {
-                        Label(isRetrieving ? "Remembering..." : "Retrieve Memory", 
-                              systemImage: isRetrieving ? "hourglass" : "sparkles.rectangle.stack")
-                    }
-                    .buttonStyle(.bordered)
-                    .padding(.bottom)
-                    .disabled(isRetrieving || isAchievementsEmpty) // Disable while retrieving or if empty
-                    .opacity((isRetrieving || isAchievementsEmpty) ? 0.7 : 1.0) // Dim when disabled
-                }
+                    // HStack for Add and Retrieve buttons
+                    HStack {
+                        // Add Button
+                        Button {
+                            showingAddSheet = true
+                        } label: {
+                            Image("add_button")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 80, height: 80)
+                        }
+                        
+                        Spacer() // Pushes buttons apart
+                        
+                        // Retrieve Button
+                        Button {
+                            guard !isRetrieving else { return }
+                            retrieveAchievement()
+                        } label: {
+                            Image("retrieve_button") 
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 80, height: 80)
+                        }
+                        .disabled(isRetrieving || isAchievementsEmpty)
+                        .opacity(isRetrieving ? 0.6 : (isAchievementsEmpty ? 0.4 : 1.0))
+                        
+                    } // End HStack for buttons
+                    .padding(.horizontal, 40) // Add horizontal padding to keep buttons away from edges
+                    .padding(.bottom) // Add some padding below buttons
+                    
+                } // End VStack
                 .navigationTitle("Achievement Jar")
             }
             .tabItem {
@@ -85,17 +101,6 @@ struct ContentView: View {
             }
             .tag(Tab.jar)
             
-            // --- Add Button (Middle Tab) ---
-            // Using an empty view since this tab is just for opening the sheet
-            Color.clear
-                .tabItem {
-                    Image("add_button")
-                        .renderingMode(.original) // Allow system to tint it
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                }
-                .tag(Tab.add)
-
             // --- List Tab ---
             NavigationView { 
                 AchievementListView()
@@ -104,14 +109,6 @@ struct ContentView: View {
                 Label("List", systemImage: "list.bullet")
             }
             .tag(Tab.list)
-        }
-        .onChange(of: selectedTab) { oldValue, newValue in
-            // If the add tab is selected, show the add sheet
-            if newValue == .add {
-                showingAddSheet = true
-                // Reset the selected tab to jar
-                selectedTab = oldValue == .list ? .list : .jar
-            }
         }
         .sheet(isPresented: $showingAddSheet) {
             AchievementEntryView(isFirstAchievement: isAchievementsEmpty)

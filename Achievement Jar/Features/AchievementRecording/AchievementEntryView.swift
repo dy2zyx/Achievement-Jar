@@ -154,6 +154,8 @@ struct AchievementEntryView: View {
                     saveAchievementAndDismiss() // Save and dismiss after animation
                 }
             )
+            .opacity(showingAnimation ? 1 : 0)
+            .allowsHitTesting(showingAnimation)
         }
     }
     
