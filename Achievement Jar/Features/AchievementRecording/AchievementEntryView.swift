@@ -115,11 +115,14 @@ struct AchievementEntryView: View {
                         // Mood selector
                         MoodSelector(selectedMoods: $selectedMoods)
                         
-                        Spacer(minLength: 30) // Push button to bottom with minimum space
+                        // No Spacer here, as the button is in safeAreaInset
 
                     }
                     .padding()
+                    .padding(.bottom, 70)
+                    .frame(maxHeight: .infinity)
                 }
+                .frame(maxHeight: .infinity)
                 .safeAreaInset(edge: .bottom) {
                     // Add to Jar Button placed outside ScrollView
                     Button("Add to Jar") {
@@ -133,6 +136,7 @@ struct AchievementEntryView: View {
                     .opacity(showingAnimation ? 0 : 1) // Hide button during animation
                     .accessibilityIdentifier("addToJarButton")
                 }
+                .ignoresSafeArea(.keyboard, edges: .bottom)
                 .navigationTitle("New Achievement")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
@@ -144,6 +148,7 @@ struct AchievementEntryView: View {
                 }
                 .disabled(showingAnimation) // Disable UI during animation
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             
             // Overlay the animation when active
             JarAdditionAnimation(

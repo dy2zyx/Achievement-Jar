@@ -63,6 +63,7 @@ struct RetrievedAchievementView: View {
                 }
                 .padding()
             }
+            .frame(maxHeight: .infinity)
             .navigationTitle("A Memory")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -73,6 +74,7 @@ struct RetrievedAchievementView: View {
                 }
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

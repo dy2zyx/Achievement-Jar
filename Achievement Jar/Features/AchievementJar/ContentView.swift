@@ -92,10 +92,12 @@ struct ContentView: View {
                     } // End HStack for buttons
                     .padding(.horizontal, 40) // Add horizontal padding to keep buttons away from edges
                     .padding(.bottom) // Add some padding below buttons
-                    
-                } // End VStack
+                }
+                .ignoresSafeArea(.keyboard) // Ignore keyboard safe area changes
+                .edgesIgnoringSafeArea([]) // Reset any ignored edges to default
                 .navigationTitle("Achievement Jar")
             }
+            .navigationViewStyle(.stack)
             .tabItem {
                 Label("Jar", systemImage: "circle.grid.cross")
             }
@@ -105,15 +107,18 @@ struct ContentView: View {
             NavigationView { 
                 AchievementListView()
             }
+            .navigationViewStyle(.stack)
             .tabItem {
                 Label("List", systemImage: "list.bullet")
             }
             .tag(Tab.list)
         }
-        .sheet(isPresented: $showingAddSheet) {
+        // Replace .sheet with .fullScreenCover
+        .fullScreenCover(isPresented: $showingAddSheet) {
             AchievementEntryView(isFirstAchievement: isAchievementsEmpty)
                 .environment(\.modelContext, modelContext)
         }
+        
         // Sheet to display the retrieved achievement
         .sheet(item: $retrievedAchievement) { achievement in
             // The sheet is presented when retrievedAchievement is not nil
