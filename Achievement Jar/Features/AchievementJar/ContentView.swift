@@ -46,7 +46,7 @@ struct ContentView: View {
             // --- Jar Tab ---
             NavigationView {
                 VStack {
-                    Text("Achievements: \(achievements.count)")
+                    Text(String(format: NSLocalizedString("contentView_label_achievements", comment: "Label showing the count of achievements"), achievements.count))
                         .font(.headline)
                         .padding(.top)
                     
@@ -95,11 +95,11 @@ struct ContentView: View {
                 }
                 .ignoresSafeArea(.keyboard) // Ignore keyboard safe area changes
                 .edgesIgnoringSafeArea([]) // Reset any ignored edges to default
-                .navigationTitle("Achievement Jar")
+                .navigationTitle(NSLocalizedString("contentView_title_achievementJar", comment: "Title for the main achievement jar view"))
             }
             .navigationViewStyle(.stack)
             .tabItem {
-                Label("Jar", systemImage: "circle.grid.cross")
+                Label(NSLocalizedString("contentView_tab_jar", comment: "Tab title for the jar view"), systemImage: "circle.grid.cross")
             }
             .tag(Tab.jar)
             
@@ -109,7 +109,7 @@ struct ContentView: View {
             }
             .navigationViewStyle(.stack)
             .tabItem {
-                Label("List", systemImage: "list.bullet")
+                Label(NSLocalizedString("contentView_tab_list", comment: "Tab title for the achievements list"), systemImage: "list.bullet")
             }
             .tag(Tab.list)
         }

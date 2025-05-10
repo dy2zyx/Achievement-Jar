@@ -1,0 +1,77 @@
+// MARK: - CategorySelector
+"categorySelector_title_category" = "Category";
+"categorySelector_preview_selectedPrefix" = "Selected: ";
+
+// MARK: - AchievementCategory
+"achievementCategory_personal" = "Personal";
+"achievementCategory_work" = "Work";
+"achievementCategory_health" = "Health";
+"achievementCategory_learning" = "Learning";
+"achievementCategory_relationships" = "Relationships";
+"achievementCategory_other" = "Other";
+
+// MARK: - MoodSelector
+"moodSelector_title_feelingsQuestion" = "How do you feel about it?";
+"moodSelector_preview_selectedPrefix" = "Selected: ";
+"moodSelector_preview_noMoodsSelected" = "None";
+
+// MARK: - MoodTags
+"moodTag_happy" = "Happy";
+"moodTag_proud" = "Proud";
+"moodTag_grateful" = "Grateful";
+"moodTag_excited" = "Excited";
+"moodTag_peaceful" = "Peaceful";
+"moodTag_accomplished" = "Accomplished";
+
+// MARK: - AchievementEntry
+"achievementEntry_screen_title" = "New Achievement";
+"achievementEntry_textField_title" = "Record your achievement:";
+"achievementEntry_characterCount_format" = "%d/%d";
+"achievementEntry_date_title" = "Date";
+"achievementEntry_date_useCustomDate" = "Use custom date";
+"achievementEntry_date_datePicker" = "Achievement date";
+"achievementEntry_date_today" = "Today";
+"achievementEntry_button_addToJar" = "Add to Jar";
+"achievementEntry_button_cancel" = "Cancel";
+
+// MARK: - AchievementList
+"achievementListView_title_allAchievements" = "All Achievements";
+"achievementListView_filter_categoryLabel" = "Category";
+"achievementListView_filter_periodLabel" = "Period";
+"achievementListView_filter_allCategories" = "All Categories";
+"achievementList_empty_title" = "No Achievements Found";
+"achievementList_empty_description" = "Try adjusting the filters or add some new achievements.";
+
+// MARK: - AchievementDetail
+"achievementDetail_screen_title" = "Details";
+"achievementDetail_content_title" = "Achievement";
+"achievementDetail_recordedOn" = "Recorded On";
+"achievementDetail_category" = "Category";
+"achievementDetail_moods" = "Moods";
+"achievementDetail_lastRemembered" = "Last Remembered";
+
+// MARK: - TimePeriod
+"timePeriod_last7Days" = "Last 7 Days";
+"timePeriod_last30Days" = "Last 30 Days";
+"timePeriod_last90Days" = "Last 90 Days";
+"timePeriod_lastYear" = "Last Year";
+"timePeriod_allTime" = "All Time";
+
+// MARK: - ContentView
+"contentView_title_achievementJar" = "Achievement Jar";
+"contentView_label_achievements" = "Achievements: %d";
+"contentView_tab_jar" = "Jar";
+"contentView_tab_list" = "List";
+
+// MARK: - RetrievedAchievementView
+"retrievedAchievement_title" = "A Memory";
+"retrievedAchievement_question" = "Remember this moment?";
+"retrievedAchievement_label_achievement" = "Achievement:";
+"retrievedAchievement_label_date" = "Date:";
+"retrievedAchievement_label_category" = "Category:";
+"retrievedAchievement_label_moods" = "Moods:";
+"retrievedAchievement_button_done" = "Done";
+
+// MARK: - Previews
+"preview_firstAchievement" = "First Achievement";
+"preview_subsequentAchievement" = "Subsequent Achievement"; 

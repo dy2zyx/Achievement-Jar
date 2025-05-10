@@ -5,11 +5,32 @@ struct RetrievedAchievementView: View {
     let achievement: Achievement
     @Environment(\.dismiss) private var dismiss
 
+    // 获取类别的本地化显示名称
+    private func localizedCategoryName(for categoryRawValue: String) -> String {
+        if let category = AchievementCategory(rawValue: categoryRawValue) {
+            return category.localizedName
+        }
+        return categoryRawValue
+    }
+    
+    // 获取心情的本地化显示名称
+    private func localizedMoodName(for moodRawValue: String) -> String {
+        if let mood = MoodTag(rawValue: moodRawValue) {
+            return mood.localizedName
+        }
+        return moodRawValue
+    }
+    
+    // 对心情数组进行本地化处理
+    private func localizedMoods() -> String {
+        achievement.moods.map { localizedMoodName(for: $0) }.joined(separator: ", ")
+    }
+
     var body: some View {
         NavigationView { // Embed in NavigationView for title and dismiss button
             ScrollView { // Use ScrollView for potentially long content
                 VStack(alignment: .leading, spacing: 20) {
-                    Text("Remember this moment?")
+                    Text(NSLocalizedString("retrievedAchievement_question", comment: "Question asking if the user remembers the achievement"))
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .multilineTextAlignment(.center)
@@ -18,7 +39,7 @@ struct RetrievedAchievementView: View {
                     
                     // Content Section
                     VStack(alignment: .leading) {
-                        Text("Achievement:")
+                        Text(NSLocalizedString("retrievedAchievement_label_achievement", comment: "Label for the achievement content"))
                             .font(.headline)
                         Text(achievement.content)
                             .padding()
@@ -30,7 +51,7 @@ struct RetrievedAchievementView: View {
                     // Details Section
                     HStack {
                         VStack(alignment: .leading) {
-                            Text("Date:")
+                            Text(NSLocalizedString("retrievedAchievement_label_date", comment: "Label for the achievement date"))
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                             Text(achievement.date, style: .date)
@@ -38,10 +59,10 @@ struct RetrievedAchievementView: View {
                         }
                         Spacer()
                         VStack(alignment: .leading) {
-                            Text("Category:")
+                            Text(NSLocalizedString("retrievedAchievement_label_category", comment: "Label for the achievement category"))
                                 .font(.caption)
                                 .foregroundColor(.secondary)
-                            Text(achievement.category)
+                            Text(localizedCategoryName(for: achievement.category))
                                 .fontWeight(.semibold)
                         }
                     }
@@ -49,12 +70,12 @@ struct RetrievedAchievementView: View {
                     // Moods Section (if any)
                     if !achievement.moods.isEmpty {
                         VStack(alignment: .leading) {
-                            Text("Moods:")
+                            Text(NSLocalizedString("retrievedAchievement_label_moods", comment: "Label for the achievement moods"))
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                             // Display moods as tags - requires a simple FlowLayout or similar
                             // For now, just join them
-                            Text(achievement.moods.joined(separator: ", "))
+                            Text(localizedMoods())
                                 .fontWeight(.semibold)
                         }
                     }
@@ -64,11 +85,11 @@ struct RetrievedAchievementView: View {
                 .padding()
             }
             .frame(maxHeight: .infinity)
-            .navigationTitle("A Memory")
+            .navigationTitle(NSLocalizedString("retrievedAchievement_title", comment: "Title for the retrieved achievement screen"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
+                    Button(NSLocalizedString("retrievedAchievement_button_done", comment: "Button to close the retrieved achievement view")) {
                         dismiss()
                     }
                 }

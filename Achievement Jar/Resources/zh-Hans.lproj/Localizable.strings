@@ -1,0 +1,81 @@
+// Simplified Chinese Localizations
+// Add your key-value pairs here, for example:
+// "welcome_message" = "欢迎！"; 
+
+// MARK: - CategorySelector
+"categorySelector_title_category" = "类别";
+"categorySelector_preview_selectedPrefix" = "已选择：";
+
+// MARK: - AchievementCategory
+"achievementCategory_personal" = "个人";
+"achievementCategory_work" = "工作";
+"achievementCategory_health" = "健康";
+"achievementCategory_learning" = "学习";
+"achievementCategory_relationships" = "人际关系";
+"achievementCategory_other" = "其他";
+
+// MARK: - MoodSelector
+"moodSelector_title_feelingsQuestion" = "这让你感觉如何？";
+"moodSelector_preview_selectedPrefix" = "已选择：";
+"moodSelector_preview_noMoodsSelected" = "无";
+
+// MARK: - MoodTags
+"moodTag_happy" = "快乐";
+"moodTag_proud" = "自豪";
+"moodTag_grateful" = "感恩";
+"moodTag_excited" = "兴奋";
+"moodTag_peaceful" = "平静";
+"moodTag_accomplished" = "成就感";
+
+// MARK: - AchievementEntry
+"achievementEntry_screen_title" = "新成就";
+"achievementEntry_textField_title" = "记录你的成就：";
+"achievementEntry_characterCount_format" = "%d/%d";
+"achievementEntry_date_title" = "日期";
+"achievementEntry_date_useCustomDate" = "使用自定义日期";
+"achievementEntry_date_datePicker" = "成就日期";
+"achievementEntry_date_today" = "今天";
+"achievementEntry_button_addToJar" = "添加到罐子";
+"achievementEntry_button_cancel" = "取消";
+
+// MARK: - AchievementList
+"achievementListView_title_allAchievements" = "所有成就";
+"achievementListView_filter_categoryLabel" = "类别";
+"achievementListView_filter_periodLabel" = "时间段";
+"achievementListView_filter_allCategories" = "所有类别";
+"achievementList_empty_title" = "未找到成就";
+"achievementList_empty_description" = "尝试调整筛选条件或添加一些新成就。";
+
+// MARK: - AchievementDetail
+"achievementDetail_screen_title" = "详情";
+"achievementDetail_content_title" = "成就";
+"achievementDetail_recordedOn" = "记录于";
+"achievementDetail_category" = "类别";
+"achievementDetail_moods" = "心情";
+"achievementDetail_lastRemembered" = "上次回顾";
+
+// MARK: - TimePeriod
+"timePeriod_last7Days" = "最近7天";
+"timePeriod_last30Days" = "最近30天";
+"timePeriod_last90Days" = "最近90天";
+"timePeriod_lastYear" = "最近一年";
+"timePeriod_allTime" = "所有时间";
+
+// MARK: - ContentView
+"contentView_title_achievementJar" = "成就收集罐";
+"contentView_label_achievements" = "成就数量: %d";
+"contentView_tab_jar" = "收集罐";
+"contentView_tab_list" = "列表";
+
+// MARK: - RetrievedAchievementView
+"retrievedAchievement_title" = "一段回忆";
+"retrievedAchievement_question" = "还记得这一刻吗？";
+"retrievedAchievement_label_achievement" = "成就:";
+"retrievedAchievement_label_date" = "日期:";
+"retrievedAchievement_label_category" = "类别:";
+"retrievedAchievement_label_moods" = "心情:";
+"retrievedAchievement_button_done" = "完成";
+
+// MARK: - Previews
+"preview_firstAchievement" = "第一个成就";
+"preview_subsequentAchievement" = "后续成就"; 

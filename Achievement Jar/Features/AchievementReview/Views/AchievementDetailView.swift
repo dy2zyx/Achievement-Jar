@@ -5,12 +5,28 @@ struct AchievementDetailView: View {
     // Use @Bindable for potential future edits, though just `let` is fine for read-only
     @Bindable var achievement: Achievement
 
+    // 获取类别的本地化显示名称
+    private func localizedCategoryName(for categoryRawValue: String) -> String {
+        if let category = AchievementCategory(rawValue: categoryRawValue) {
+            return category.localizedName
+        }
+        return categoryRawValue
+    }
+    
+    // 获取心情的本地化显示名称
+    private func localizedMoodName(for moodRawValue: String) -> String {
+        if let mood = MoodTag(rawValue: moodRawValue) {
+            return mood.localizedName
+        }
+        return moodRawValue
+    }
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 // Content Section
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Achievement")
+                    Text(NSLocalizedString("achievementDetail_content_title", comment: "Title for the achievement content section"))
                         .font(.title2)
                         .fontWeight(.semibold)
                     Text(achievement.content)
@@ -26,7 +42,7 @@ struct AchievementDetailView: View {
                 // Details Section
                 HStack(alignment: .top) {
                     VStack(alignment: .leading) {
-                        Text("Recorded On")
+                        Text(NSLocalizedString("achievementDetail_recordedOn", comment: "Label for when the achievement was recorded"))
                             .font(.caption)
                             .foregroundColor(.secondary)
                         // Display both date and time
@@ -36,10 +52,10 @@ struct AchievementDetailView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     
                     VStack(alignment: .leading) {
-                        Text("Category")
+                        Text(NSLocalizedString("achievementDetail_category", comment: "Label for the achievement category"))
                             .font(.caption)
                             .foregroundColor(.secondary)
-                        Text(achievement.category)
+                        Text(localizedCategoryName(for: achievement.category))
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
                             .background(Color.blue.opacity(0.2))
@@ -51,13 +67,13 @@ struct AchievementDetailView: View {
                 // Moods Section
                 if !achievement.moods.isEmpty {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Moods")
+                        Text(NSLocalizedString("achievementDetail_moods", comment: "Label for the moods section"))
                             .font(.headline)
                         // Simple horizontal layout for moods
                         // A FlowLayout would be better for many moods
                         HStack {
                             ForEach(achievement.moods.sorted(), id: \.self) { mood in
-                                Text(mood)
+                                Text(localizedMoodName(for: mood))
                                     .font(.caption)
                                     .padding(.horizontal, 8)
                                     .padding(.vertical, 4)
@@ -72,7 +88,7 @@ struct AchievementDetailView: View {
                 if let lastRetrieved = achievement.lastRetrievedDate {
                     Divider()
                     VStack(alignment: .leading) {
-                        Text("Last Remembered")
+                        Text(NSLocalizedString("achievementDetail_lastRemembered", comment: "Label for when the achievement was last viewed"))
                             .font(.caption)
                             .foregroundColor(.secondary)
                         Text(lastRetrieved, style: .date)
@@ -86,7 +102,7 @@ struct AchievementDetailView: View {
             }
             .padding()
         }
-        .navigationTitle("Details")
+        .navigationTitle(NSLocalizedString("achievementDetail_screen_title", comment: "Title for the achievement details screen"))
         // Consider adding Edit/Delete options to the toolbar later
     }
 }
@@ -111,4 +127,5 @@ struct AchievementDetailView: View {
         AchievementDetailView(achievement: sampleAchievement)
             .modelContainer(container)
     }
+    .environment(\.locale, .init(identifier: "zh-Hans")) // 强制预览使用简体中文
 } 

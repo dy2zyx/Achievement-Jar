@@ -11,6 +11,22 @@ enum TimePeriod: String, CaseIterable, Identifiable {
     
     var id: String { self.rawValue }
     
+    // Localized name for display
+    var localizedName: String {
+        switch self {
+        case .last7Days:
+            return NSLocalizedString("timePeriod_last7Days", comment: "Filter period: Last 7 Days")
+        case .last30Days:
+            return NSLocalizedString("timePeriod_last30Days", comment: "Filter period: Last 30 Days")
+        case .last90Days:
+            return NSLocalizedString("timePeriod_last90Days", comment: "Filter period: Last 90 Days")
+        case .lastYear:
+            return NSLocalizedString("timePeriod_lastYear", comment: "Filter period: Last Year")
+        case .allTime:
+            return NSLocalizedString("timePeriod_allTime", comment: "Filter period: All Time")
+        }
+    }
+    
     // Calculate the start date based on the period
     var startDate: Date {
         let calendar = Calendar.current
@@ -44,13 +60,19 @@ struct AchievementListView: View {
     }
     
     private func categoryDisplayName(for category: String?) -> String {
-        category ?? "All Categories"
+        if category == nil {
+            return NSLocalizedString("achievementListView_filter_allCategories", comment: "Filter option: All Categories")
+        } else if let catEnum = AchievementCategory(rawValue: category!) {
+            return catEnum.localizedName
+        } else {
+            return category!
+        }
     }
     
     var body: some View {
         // Pass both period and category to the content view
         AchievementListContentView(selectedPeriod: selectedPeriod, selectedCategory: selectedCategory)
-            .navigationTitle("All Achievements")
+            .navigationTitle(NSLocalizedString("achievementListView_title_allAchievements", comment: "Title for the achievements list screen"))
             .toolbar {
                 // Keep Edit button
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -59,7 +81,7 @@ struct AchievementListView: View {
                 
                 // Category Picker
                 ToolbarItem(placement: .topBarLeading) { // Move to top leading for space
-                    Picker("Category", selection: $selectedCategory) {
+                    Picker(NSLocalizedString("achievementListView_filter_categoryLabel", comment: "Label for category filter dropdown"), selection: $selectedCategory) {
                         ForEach(categoryOptions, id: \.self) { category in
                             Text(categoryDisplayName(for: category)).tag(category)
                         }
@@ -69,9 +91,9 @@ struct AchievementListView: View {
                 
                 // Period Picker
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Picker("Period", selection: $selectedPeriod) {
+                    Picker(NSLocalizedString("achievementListView_filter_periodLabel", comment: "Label for time period filter dropdown"), selection: $selectedPeriod) {
                         ForEach(TimePeriod.allCases) { period in
-                            Text(period.rawValue).tag(period)
+                            Text(period.localizedName).tag(period)
                         }
                     }
                     .pickerStyle(.menu)
@@ -119,9 +141,9 @@ struct AchievementListContentView: View {
         List {
             if achievements.isEmpty {
                 ContentUnavailableView {
-                    Label("No Achievements Found", systemImage: "doc.text.magnifyingglass")
+                    Label(NSLocalizedString("achievementList_empty_title", comment: "Title shown when no achievements match the filters"), systemImage: "doc.text.magnifyingglass")
                 } description: {
-                    Text("Try adjusting the filters or add some new achievements.")
+                    Text(NSLocalizedString("achievementList_empty_description", comment: "Description shown when no achievements match the filters"))
                 }
             } else {
                 ForEach(achievements) { achievement in
@@ -141,15 +163,17 @@ struct AchievementListContentView: View {
                                     .foregroundColor(.secondary)
                                 Text("•")
                                     .foregroundColor(.secondary)
-                                Text(achievement.category)
+                                Text(localizedCategoryName(for: achievement.category))
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                                 if !achievement.moods.isEmpty {
                                     Text("•")
                                         .foregroundColor(.secondary)
-                                    Text(achievement.moods.first ?? "")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
+                                    if let firstMood = achievement.moods.first {
+                                        Text(localizedMoodName(for: firstMood))
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    }
                                 }
                                 Spacer() 
                             }
@@ -166,6 +190,22 @@ struct AchievementListContentView: View {
         withAnimation {
             offsets.map { achievements[$0] }.forEach(modelContext.delete)
         }
+    }
+    
+    // 获取类别的本地化显示名称
+    private func localizedCategoryName(for categoryRawValue: String) -> String {
+        if let category = AchievementCategory(rawValue: categoryRawValue) {
+            return category.localizedName
+        }
+        return categoryRawValue
+    }
+    
+    // 获取心情的本地化显示名称
+    private func localizedMoodName(for moodRawValue: String) -> String {
+        if let mood = MoodTag(rawValue: moodRawValue) {
+            return mood.localizedName
+        }
+        return moodRawValue
     }
 }
 
@@ -188,4 +228,5 @@ struct AchievementListContentView: View {
         AchievementListView()
     }
     .modelContainer(container)
+    .environment(\.locale, .init(identifier: "zh-Hans")) // 强制预览使用简体中文
 } 

@@ -43,6 +43,14 @@ struct AchievementEntryView: View {
         return formatter
     }
     
+    // 确保日期不超过今天
+    private func validateSelectedDate() {
+        let currentDate = Date()
+        if selectedDate > currentDate {
+            selectedDate = currentDate
+        }
+    }
+    
     var body: some View {
         ZStack {
             NavigationView {
@@ -50,12 +58,12 @@ struct AchievementEntryView: View {
                     VStack(alignment: .leading, spacing: 20) {
                         // Achievement text entry section
                         VStack(alignment: .leading, spacing: 5) {
-                            Text("Record your achievement:")
+                            Text(NSLocalizedString("achievementEntry_textField_title", comment: "Title for the achievement text input field"))
                                 .font(.headline)
                                 .padding(.bottom, 2)
 
                             // Character count display
-                            Text("\(characterCount)/\(characterLimit)")
+                            Text(String(format: NSLocalizedString("achievementEntry_characterCount_format", comment: "Format for displaying character count and limit"), characterCount, characterLimit))
                                 .foregroundColor(countColor)
                                 .font(.caption)
                                 .frame(maxWidth: .infinity, alignment: .trailing)
@@ -80,24 +88,31 @@ struct AchievementEntryView: View {
                         
                         // Date selection section
                         VStack(alignment: .leading, spacing: 5) {
-                            Text("Date")
+                            Text(NSLocalizedString("achievementEntry_date_title", comment: "Title for the date selection section"))
                                 .font(.headline)
                                 .padding(.bottom, 4)
                             
                             // Toggle between "Today" and custom date
-                            Toggle("Use custom date", isOn: $isCustomDate)
+                            Toggle(NSLocalizedString("achievementEntry_date_useCustomDate", comment: "Toggle label for using a custom date"), isOn: $isCustomDate)
                                 .padding(.bottom, isCustomDate ? 10 : 0)
+                                .onChange(of: isCustomDate) { oldValue, newValue in
+                                    if newValue {
+                                        validateSelectedDate()
+                                    }
+                                }
                             
                             if isCustomDate {
                                 DatePicker(
-                                    "Achievement date",
+                                    NSLocalizedString("achievementEntry_date_datePicker", comment: "Label for the date picker when custom date is selected"),
                                     selection: $selectedDate,
+                                    in: ...Date(), // 限制日期范围至今天及以前
                                     displayedComponents: [.date]
                                 )
                                 .datePickerStyle(.compact)
                                 .padding(.horizontal)
                             } else {
-                                Text("Today: \(Date(), formatter: dateFormatter)")
+                                let todayLabel = NSLocalizedString("achievementEntry_date_today", comment: "Label showing today's date")
+                                Text("\(todayLabel): \(Date(), formatter: dateFormatter)")
                                     .foregroundColor(.secondary)
                                     .padding(.horizontal)
                             }
@@ -125,7 +140,7 @@ struct AchievementEntryView: View {
                 .frame(maxHeight: .infinity)
                 .safeAreaInset(edge: .bottom) {
                     // Add to Jar Button placed outside ScrollView
-                    Button("Add to Jar") {
+                    Button(NSLocalizedString("achievementEntry_button_addToJar", comment: "Button to save the achievement")) {
                         triggerSaveAnimation()
                     }
                     .buttonStyle(.borderedProminent)
@@ -137,11 +152,11 @@ struct AchievementEntryView: View {
                     .accessibilityIdentifier("addToJarButton")
                 }
                 .ignoresSafeArea(.keyboard, edges: .bottom)
-                .navigationTitle("New Achievement")
+                .navigationTitle(NSLocalizedString("achievementEntry_screen_title", comment: "Title for new achievement screen"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
-                        Button("Cancel") {
+                        Button(NSLocalizedString("achievementEntry_button_cancel", comment: "Button to cancel adding a new achievement")) {
                             dismiss()
                         }
                     }
@@ -161,6 +176,9 @@ struct AchievementEntryView: View {
             )
             .opacity(showingAnimation ? 1 : 0)
             .allowsHitTesting(showingAnimation)
+        }
+        .onAppear {
+            validateSelectedDate()
         }
     }
     
@@ -190,15 +208,16 @@ struct AchievementEntryView: View {
 #Preview {
     // Preview with both states
     VStack {
-        Text("First Achievement")
+        Text(NSLocalizedString("preview_firstAchievement", comment: "Label for first achievement preview"))
             .font(.headline)
         AchievementEntryView(isFirstAchievement: true)
             .frame(height: 300)
             
-        Text("Subsequent Achievement")
+        Text(NSLocalizedString("preview_subsequentAchievement", comment: "Label for subsequent achievement preview"))
             .font(.headline)
         AchievementEntryView(isFirstAchievement: false)
             .frame(height: 300)
     }
     .modelContainer(for: Achievement.self, inMemory: true)
+    .environment(\.locale, .init(identifier: "zh-Hans")) // 强制预览使用简体中文
 } 
